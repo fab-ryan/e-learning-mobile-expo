@@ -5,6 +5,7 @@
 
 const tintColorLight = '#38bec5';
 const tintColorDark = '#fff';
+export const tint = '#38bec5';
 interface Colors {
   light: {
     text: string,

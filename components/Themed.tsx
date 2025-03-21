@@ -1,6 +1,11 @@
 import { View as DefaultView, type ViewProps, Animated, useAnimatedValue, Text as DefaultText, type ViewStyle } from 'react-native';
 import { useEffect } from 'react';
 import { useThemeColor } from '@/hooks';
+import { StyleSheet } from 'react-native';
+import { Image as DefaultImages } from 'expo-image';
+import { tint } from '@/constants/Colors';
+
+export type ImageProps = DefaultImages['props'];
 type ThemeProps = {
     lightColor?: string;
     darkColor?: string;
@@ -69,3 +74,22 @@ export function Text(props: TextProps) {
         />
     );
 }
+
+
+export function Image({ style, ...props }: ImageProps) {
+    const blurhash =
+        '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+    return (
+        <DefaultImages
+            style={[styles.image, style]}
+            placeholder={props.placeholder ?? blurhash}
+            {...props}
+        />
+    );
+}
+
+const styles = StyleSheet.create({
+    image: {
+        backgroundColor: tint,
+    },
+});
