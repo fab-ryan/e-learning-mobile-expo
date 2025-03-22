@@ -4,6 +4,7 @@ import { useThemeColor } from '@/hooks';
 import { StyleSheet } from 'react-native';
 import { Image as DefaultImages } from 'expo-image';
 import { tint } from '@/constants/Colors';
+import { SafeAreaView as SafeAreaViewDefault, SafeAreaViewProps as SafeAreaProps } from 'react-native-safe-area-context';
 
 export type ImageProps = DefaultImages['props'];
 type ThemeProps = {
@@ -21,8 +22,10 @@ type FontTypes =
     | 'poppins-semi-bold';
 
 export type TextProps = ThemeProps &
-    DefaultText['props'] & { fontFamily?: FontTypes };
-
+    DefaultText['props'] & { fontFamily?: FontTypes } & {
+        type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+    };
+export type SafeAreaViewProps = ThemeProps & SafeAreaProps;
 export const View = ({ style, lightColor, darkColor, ...otherProps }: ThemedViewProps) => {
     const backgroundColor = useThemeColor(
         { light: lightColor, dark: darkColor },
@@ -62,6 +65,7 @@ export function Text(props: TextProps) {
         style,
         lightColor,
         fontFamily = 'poppins',
+        type = 'default',
         darkColor,
         ...otherProps
     } = props;
@@ -69,7 +73,11 @@ export function Text(props: TextProps) {
 
     return (
         <DefaultText
-            style={[{ color }, style, { fontFamily }]}
+            style={[{ color }, type === 'default' ? styles.default : undefined,
+            type === 'title' ? styles.title : undefined,
+            type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
+            type === 'subtitle' ? styles.subtitle : undefined,
+            type === 'link' ? styles.link : undefined, style, { fontFamily }]}
             {...otherProps}
         />
     );
@@ -87,9 +95,39 @@ export function Image({ style, ...props }: ImageProps) {
         />
     );
 }
+export function SafeAreaView({ style, lightColor, darkColor, ...otherProps }: SafeAreaViewProps) {
+    const backgroundColor = useThemeColor(
+        { light: lightColor, dark: darkColor },
+        'background',
+    );
+    return <SafeAreaViewDefault style={[{ backgroundColor }, style]} {...otherProps} />;
+}
 
 const styles = StyleSheet.create({
     image: {
         backgroundColor: tint,
+    },
+    default: {
+        fontSize: 16,
+        lineHeight: 24,
+    },
+    defaultSemiBold: {
+        fontSize: 16,
+        lineHeight: 24,
+        fontWeight: '600',
+    },
+    title: {
+        fontSize: 32,
+        fontWeight: 'bold',
+        lineHeight: 32,
+    },
+    subtitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    link: {
+        lineHeight: 30,
+        fontSize: 16,
+        color: '#0a7ea4',
     },
 });

@@ -5,7 +5,7 @@ interface IOnboard {
     image: string
 }
 
-const Onboard: IOnboard[] = [
+export const Onboard: IOnboard[] = [
     {
         id: 1,
         title: 'Grow your creative skill with us',

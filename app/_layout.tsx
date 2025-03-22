@@ -7,6 +7,8 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { KeyboardAvoidingView, Platform } from 'react-native';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -28,15 +30,25 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack
-        initialRouteName='(root)'
+    <SafeAreaProvider
+    >
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <Stack.Screen name="(root)" options={{ headerShown: false }} />
-        {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Stack
+            initialRouteName='(root)'
+          >
+            <Stack.Screen name="(root)" options={{ headerShown: false }} />
+            {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
+            <Stack.Screen name="+not-found" />
+          </Stack>
+          <StatusBar style="auto" />
+        </ThemeProvider>
+      </KeyboardAvoidingView>
+
+    </SafeAreaProvider>
   );
 }
