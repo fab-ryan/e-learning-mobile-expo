@@ -5,6 +5,8 @@ import { StyleSheet } from 'react-native';
 import { Image as DefaultImages } from 'expo-image';
 import { tint } from '@/constants/Colors';
 import { SafeAreaView as SafeAreaViewDefault, SafeAreaViewProps as SafeAreaProps } from 'react-native-safe-area-context';
+import { IconProps, IconsEnum } from '@/types';
+import { AntDesign, Entypo, Feather, FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 export type ImageProps = DefaultImages['props'];
 type ThemeProps = {
@@ -102,6 +104,47 @@ export function SafeAreaView({ style, lightColor, darkColor, ...otherProps }: Sa
     );
     return <SafeAreaViewDefault style={[{ backgroundColor }, style]} {...otherProps} />;
 }
+
+function Icon<T extends IconsEnum>(props: IconProps<T>) {
+    const { size = 16, lightColor, darkColor, style, ...otherProps } = props;
+    const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+    const IconComponent = getIconComponent(props.type);
+
+    return (
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        <IconComponent
+            size={size || 24}
+            {...otherProps}
+            color={props.color ?? color}
+            style={[
+                style,
+                {
+                    fontFamily: 'poppins',
+                },
+            ]}
+        />
+    );
+}
+function getIconComponent(type?: IconsEnum) {
+    switch (type) {
+        case IconsEnum.fa:
+            return FontAwesome;
+        case IconsEnum.feather:
+            return Feather;
+        case IconsEnum.material:
+            return MaterialCommunityIcons;
+        case IconsEnum.ionicon:
+            return Ionicons;
+        case IconsEnum.antdesign:
+            return AntDesign;
+        case IconsEnum.entypo:
+            return Entypo;
+        default:
+            return FontAwesome;
+    }
+}
+
 
 const styles = StyleSheet.create({
     image: {
