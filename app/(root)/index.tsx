@@ -1,6 +1,7 @@
-import { View, Text, Image, SafeAreaView } from "@/components";
+import { View, Text, Image, SafeAreaView, Button, Icon } from "@/components";
 import { width } from "@/constants";
 import { Onboard } from "@/constants";
+import { IconsEnum } from "@/types";
 import { useRef, useState } from "react";
 import { Animated, StyleSheet } from "react-native";
 
@@ -23,7 +24,7 @@ export default function SplashScreen() {
       bounces={false}
       data={
         Onboard.map((item) => {
-          return <Slider {...item} />;
+          return <Slider {...item} onNext={onNext()} />;
         }
         )}
       keyExtractor={(item, index) => `${index}`}
@@ -39,11 +40,12 @@ export default function SplashScreen() {
   );
 }
 
-function Slider({ title, image, id }: {
+function Slider({ title, image, id, onNext }: {
   id: number,
   title: string,
   description: string,
-  image: string
+  image: string,
+  onNext: void
 }) {
   return (
     <SafeAreaView style={{ flex: 1, }}
@@ -109,8 +111,34 @@ function Slider({ title, image, id }: {
           <Text type="title" style={{ textAlign: "center", }}>{title}</Text>
           <Text style={{ textAlign: "center", fontSize: 16, color: "#7c7c7c" }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</Text
           >
-          <View>
+          <View
+            style={{
+              gap: 10,
+              flexDirection: 'row'
+            }}
+          >
+            <Button
+              title="Skip"
+              color="secondary"
+            />
+            <Button
+              onPress={() => { onNext }}
+              title="Next"
+              color="primary"
 
+
+            >
+              <Icon
+                type={IconsEnum.feather}
+                name="arrow-right-circle"
+                style={{
+                  marginLeft: 10,
+
+                }}
+                lightColor="#fff"
+                size={20}
+              />
+            </Button>
           </View>
         </View>
 

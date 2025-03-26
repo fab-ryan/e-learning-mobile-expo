@@ -6,6 +6,13 @@
 const tintColorLight = '#38bec5';
 const tintColorDark = '#fff';
 export const tint = '#38bec5';
+export const secondaryColor = '#D17842';
+export const lightSecondaryColor = '#52555A';
+export const lightColor = '#AEAEAE';
+export const whiteColor = '#fff';
+export const redColor = '#DC3535';
+export const inputBackgroundColor = '#141921';
+export const primaryColor = '#0C0F14';
 interface Colors {
   light: {
     text: string,

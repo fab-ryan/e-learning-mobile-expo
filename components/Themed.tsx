@@ -1,4 +1,8 @@
-import { View as DefaultView, type ViewProps, Animated, useAnimatedValue, Text as DefaultText, type ViewStyle } from 'react-native';
+import {
+    View as DefaultView, type ViewProps, Animated, useAnimatedValue, Text as DefaultText, type ViewStyle,
+    PressableProps as DefaultPressableProps,
+    Pressable as DefaultPressable,
+} from 'react-native';
 import { useEffect } from 'react';
 import { useThemeColor } from '@/hooks';
 import { StyleSheet } from 'react-native';
@@ -13,6 +17,11 @@ type ThemeProps = {
     lightColor?: string;
     darkColor?: string;
 }
+
+export type PressableProps = ThemeProps &
+    DefaultPressableProps &
+    DefaultView['props'];
+
 export type ThemedViewProps = ViewProps & ThemeProps;
 type FontTypes =
     | 'poppins'
@@ -104,8 +113,21 @@ export function SafeAreaView({ style, lightColor, darkColor, ...otherProps }: Sa
     );
     return <SafeAreaViewDefault style={[{ backgroundColor }, style]} {...otherProps} />;
 }
+export function Pressable(props: PressableProps) {
+    const { style, lightColor, darkColor, ...otherProps } = props;
+    const backgroundColor = useThemeColor(
+        { light: lightColor, dark: darkColor },
+        'background',
+    );
 
-function Icon<T extends IconsEnum>(props: IconProps<T>) {
+    return (
+        <DefaultPressable
+            style={[{ backgroundColor }, style]}
+            {...otherProps}
+        />
+    );
+}
+export function Icon<T extends IconsEnum>(props: IconProps<T>) {
     const { size = 16, lightColor, darkColor, style, ...otherProps } = props;
     const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
     const IconComponent = getIconComponent(props.type);
